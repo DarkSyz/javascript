@@ -38,26 +38,50 @@
 		}
 	</style>
 	<script>
-		function opensidebar(){
-			$(".sidebar").css("width", "250px");
-			$("#main").css("margin-left", "250px");
+	$(function(){	// once DOM ready
+	
+		$.fn.sidebar = function (options){
+			var sidebar = $(this);
+			var close = $(options.close, sidebar);
+			var target = $(options.target, "body");
+			var main = $(options.main, "body");
+			var width = options.width || "250px";
+			
+			sidebar.addClass("sidebar");
+			close.addClass("close");
+			
+			target.click(function(){
+				sidebar.css("width", width);
+				target.parent().css("margin-left", width);
+			});
+
+			close.click(function(){
+				sidebar.css("width", "0px");
+				main.css("margin-left", "0px");
+			});
+		
 		}
-		function closesidebar(){
-			$(".sidebar").css("width", "0px");
-			$("#main").css("margin-left", "0px");
-		}
+		$("#sidebar").sidebar({
+			target: "#opensidebar",
+			main: "#main",
+			close: "#close",
+			width: "250px"
+		});
+
+	});
+	
 	</script>
 </head>
 <body>
-	<div class="sidebar" id="sidebar">
-		<a class="close" href="javascript:closesidebar()">&times;</a>
+	<div id="sidebar">
+		<a id="close">&times;</a>
 		<a href="#">Home</a>
 		<a href="#">More</a>
 		<a href="#">About US</a>
 		<a href="#">Contact US</a>
 	</div>
 	<div id="main">
-		<span onclick="opensidebar()">&#9776; Open</span>
+		<span id="opensidebar">&#9776; Open</span>
 	</div>
 
 </body>
